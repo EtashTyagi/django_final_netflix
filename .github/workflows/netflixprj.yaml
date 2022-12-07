@@ -7,12 +7,17 @@ name: netflixprj
 env:
     ACR_RESOURCE_GROUP: netflixprj
     AZURE_CONTAINER_REGISTRY: netflixprj
-    CHART_OVERRIDE_PATH: ./docker-compose-deploy/Chart.yaml
-    CHART_OVERRIDES: ""
-    CHART_PATH: ./docker-compose-deploy/templates
     CLUSTER_NAME: netflixprj
     CLUSTER_RESOURCE_GROUP: netflixprj
-    CONTAINER_NAME: image-workflow-1670437552268
+    CONTAINER_NAME: image-workflow-1670438752565
+    DEPLOYMENT_MANIFEST_PATH: |
+        ./media-volume-persistentvolumeclaim.yaml
+        ./nginx-deployment.yaml
+        ./nginx-service.yaml
+        ./sqlite3-volume-persistentvolumeclaim.yaml
+        ./static-volume-persistentvolumeclaim.yaml
+        ./web-deployment.yaml
+        ./web-service.yaml
 jobs:
     buildImage:
         permissions:
@@ -28,7 +33,7 @@ jobs:
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             - name: Build and push image to ACR
-              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./custom_nginx/Dockerfile ./custom_ngnix
+              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./custom_nginx/Dockerfile ./custom_nginx
     deploy:
         permissions:
             actions: read
@@ -50,5 +55,10 @@ jobs:
               with:
                 cluster-name: ${{ env.CLUSTER_NAME }}
                 resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-            - name: Deploy application
-              run: helm upgrade --wait -i -f ${{ env.CHART_OVERRIDE_PATH }}  automated-deployment ${{ env.CHART_PATH }}
+            - uses: Azure/k8s-deploy@v4
+              name: Deploys application
+              with:
+                action: deploy
+                images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+                manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+                namespace: namespace-workflow-1670438752565
