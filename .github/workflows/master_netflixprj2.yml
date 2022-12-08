@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: set workdir
+        run: |
+          cd netflixprj
+          cp .env.dev .env
       - uses: actions/checkout@v2
 
       - name: Set up Python version
