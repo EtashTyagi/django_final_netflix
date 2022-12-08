@@ -25,7 +25,6 @@ jobs:
       - name: set workdir
         run: |
           cd netflixprj
-          cp ../.env.dev ../.env .
       - name: Create and start virtual environment
         run: |
           python -m venv venv
