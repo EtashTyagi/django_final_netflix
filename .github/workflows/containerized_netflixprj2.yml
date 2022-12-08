@@ -39,8 +39,8 @@ jobs:
         with:
           name: python-app
           path: |
-            ./netflixprj
-            !venv/
+            ./netflixprj 
+            !./netflixprj/venv/
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -53,12 +53,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-app
-          path: ./netflixprj
+          path: .
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
+          working-directory: ./netflixprj
           app-name: 'netflixprj2'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_759A5D96E6A14A6F93592C6733614F7C }}
