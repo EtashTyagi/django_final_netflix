@@ -13,8 +13,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build django
       run: docker build netflixprj --file netflixprj/Dockerfile --tag netflixprj.azurecr.io/netflixprj-django:latest
-#    - name: Build nginx
-#      run: docker build custom_nginx --file custom_nginx/Dockerfile --tag netflixprj.azurecr.io/netflixprj-nginx:latest
+    - name: Build nginx
+      run: docker build custom_nginx --file custom_nginx/Dockerfile --tag netflixprj.azurecr.io/netflixprj-nginx:latest
     - name: Azure Registry Login
       uses: azure/docker-login@v1
       with:
