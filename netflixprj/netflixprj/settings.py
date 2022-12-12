@@ -9,21 +9,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+env = environ.Env()
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STORAGE_DIR = env('STORAGE_HOME')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)cf1@^t=6m7nzm0$4t4j0&y2so*q*g6*mdb^ci_duqi-(u3x5+'
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['netflixprj.azurewebsites.net', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -78,8 +83,12 @@ WSGI_APPLICATION = 'netflixprj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db/db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env("MYSQL_DB"),
+        'HOST': env("MYSQL_HOST"),
+        'PORT': env("MYSQL_PORT"),
+        'USER': env("MYSQL_USER"),
+        'PASSWORD': env("MYSQL_PASSWORD"),
     }
 }
 
@@ -133,10 +142,10 @@ SITE_ID = 1
 AUTH_USER_MODEL = 'netflixapp.CustomUser'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(STORAGE_HOME, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(STORAGE_HOME, 'media')
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'netflixapp:Home'
@@ -151,5 +160,5 @@ ACCOUNT_USERNAME_REQUIRED=False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_COOKIE_DOMAIN = "netflixprj.azurewebsites.net"
-CSRF_TRUSTED_ORIGINS = ['https://netflixprj.azurewebsites.net', 'https://netflixprj2.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = 'https://netflixprj.azurewebsites.net'
 CSRF_COOKIE_SECURE = True
