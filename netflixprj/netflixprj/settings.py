@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-)cf1@^t=6m7nzm0$4t4j0&y2so*q*g6*mdb^ci_duqi-(u3x5+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.51.25', '127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['netflixprj2.azurewebsites.net']
 
 
 # Application definition
@@ -149,3 +149,7 @@ ACCOUNT_USERNAME_REQUIRED=False
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_DOMAIN = "netflixprj2.azurewebsites.net"
+CSRF_TRUSTED_ORIGINS = ['https://netflixprj2.azurewebsites.net']
+CSRF_COOKIE_SECURE = True
