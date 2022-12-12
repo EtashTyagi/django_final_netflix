@@ -22,6 +22,8 @@ services:
     volumes:
       - ${WEBAPP_STORAGE_HOME}/media:/src/media
       - static-volume:/src/static
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     environment:
       - MYSQL_DB=${MYSQL_DB}
       - MYSQL_HOST=db
