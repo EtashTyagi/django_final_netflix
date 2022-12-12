@@ -24,8 +24,8 @@ services:
       - static-volume:/src/static
     environment:
       - MYSQL_DB=${MYSQL_DB}
-      - MYSQL_HOST=${MYSQL_HOST}
-      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
       - MYSQL_USER=root
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       
