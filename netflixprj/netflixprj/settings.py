@@ -142,7 +142,7 @@ SITE_ID = 1
 AUTH_USER_MODEL = 'netflixapp.CustomUser'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(STORAGE_HOME, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STORAGE_HOME, 'media')
