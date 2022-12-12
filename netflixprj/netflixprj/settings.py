@@ -87,6 +87,9 @@ DATABASES = {
         'PORT': env("MYSQL_PORT"),
         'USER': env("MYSQL_USER"),
         'PASSWORD': env("MYSQL_PASSWORD"),
+        'OPTIONS': {
+            'ssl': {'ca': os.path.join(BASE_DIR, './BaltimoreCyberTrustRoot.crt.pem')}
+        }
     }
 }
 
