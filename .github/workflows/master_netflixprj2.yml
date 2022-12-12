@@ -24,11 +24,13 @@ jobs:
           python-version: '3.10'
       
       - name: Create and start venv
+        working-directory: netflixprj
         run: |
           python -m venv venv
           source venv/bin/activate
       
       - name: Install dependencies
+        working-directory: netflixprj
         run: |
           pip install -r requirements.txt
 
@@ -57,9 +59,12 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v1
 
-          python manage.py collectstatic --no-input
-          python manage.py makemigrations
-          python manage.py migrate --run-syncdb
+      - name: Disable static collection and set migration command on App Service
+        uses: Azure/appservice-settings@v1
+        with:  
+          app-name: python-app
+          app-settings-json: '[{ "name": "POST_BUILD_COMMAND",  "value": "python manage.py makemigrations && python manage.py migrate --run-syncdb" }, { "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "true" }, { "name": "DJANGO_ENV", "value": "production"}]'
+
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
