@@ -158,5 +158,5 @@ ACCOUNT_USERNAME_REQUIRED=False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_COOKIE_DOMAIN = "netflixprj.azurewebsites.net"
-CSRF_TRUSTED_ORIGINS = 'https://netflixprj.azurewebsites.net'
+CSRF_TRUSTED_ORIGINS = ['https://netflixprj.azurewebsites.net']
 CSRF_COOKIE_SECURE = True
