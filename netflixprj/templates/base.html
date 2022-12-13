@@ -7,21 +7,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix</title>
-    <link rel="icon" type="image/x-icon" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico">
     <link rel="stylesheet" href="{% static 'assets/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </head>
 <body class="bg-black text-gray-100">
-    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
-        <div class="w-6/12">
+    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50" style=" background-color: black;">
+        <div class="w-6/12" style="display: flex; flex-direction: row;">
             <img src="{% static 'assets/netflix.png' %}" alt="logo" class="w-5/12 md:w-2/12">
+            <span>prototype</span>
         </div>
 
+
+        <form autocomplete="off" action="/action_page.php">
+            <div class="search-box autocomplete" style="margin-left: 100%; ">
+                <i class="fa fa-search search-box__icon"></i>
+                <input class="search-box__input" id="search_bar" placeholder="Title, movies, genre" />
+            </div>
+        </form>
+        <input type="submit" style="visibility: hidden;" />
+
         <div>
+        
+
             {% if request.user.is_authenticated %}
             <a href="{% url 'account_logout' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
                 Logout
             </a>
+
             {% else %}
             <a href="{% url 'account_login' %}" class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
                 Sign In 
@@ -33,6 +47,218 @@
     {% block content %}
     {% endblock content %}
     
-
+    <div style="position: sticky; left: 0%; bottom: 0%;text-align: center; background-color: #484747; border: solid rgb(151, 19, 19) 2px; z-index: 1000;height: 40px; font-size: larger;font-weight: bold;justify-content: center; ">BEWARE!!!!! This is not actually netflix, This is a Demo App!, Please Do Not Enter Real Credentials</div>
 </body>
+
 </html>
+
+<script>
+var searchIcon = document.getElementsByClassName("search-box__icon")[0];
+var searchBox = document.getElementsByClassName("search-box")[0];
+
+searchIcon.addEventListener("click", activateSearch);
+
+function activateSearch() {  
+  searchBox.classList.toggle("active");
+}
+
+
+
+function autocomplete(inp, arr,movie_mapping) {
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (var i = 0; i < arr.length; i++) {
+
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+ 
+          /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+
+              location.href=movie_mapping[inp.value];
+              
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+        location.href=movie_mapping[inp.value];
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}
+/*execute a function when someone clicks in the document:*/
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+}
+var movie_names = []
+var movie_mapping = {}
+$.getJSON('/api/getmovies', function(data) {
+    
+
+    for (var i =0;i<data.length;i++){
+        movie_names.push(data[i].title);
+        movie_mapping[data[i].title] = `/watch/detail/${data[i].uuid}/${data[i].type}`;
+    }
+
+
+    autocomplete(document.getElementById("search_bar"), movie_names,movie_mapping);
+});
+
+
+    </script>
+
+<style>
+.search-box {
+  position: relative;
+  width: 250px; 
+
+}
+.search-box .search-box__input {
+    outline: none;
+    background: rgba(0, 0, 0, 0.85);
+    border: solid 1px rgba(255, 255, 255, 0.85);
+    box-sizing: border-box;
+    padding: 9px 14px 9px 40px;
+    width: 0%;
+    font-size: 15px;
+    color: #fff;
+    opacity: 0;
+    transition: ease width 1s, ease opacity 1s;
+    float: right; 
+}
+  
+.search-box .search-box__icon {
+    position: absolute;
+    top: 11px;
+    color: white;
+    z-index: 10;
+    cursor: pointer;
+    right: 14px;
+    transition: ease transform 1s;
+    transition-delay: 50ms; 
+    
+}
+.search-box.active .search-box__icon {
+    transform: translateX(calc(-20vw + 40px)); 
+}
+.search-box.active .search-box__input {
+    opacity: 1;
+    width: 20vw; 
+}
+
+
+
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  /* display: inline-block; */
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 45px;
+  margin-left: -4vw;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: rgb(0, 0, 0);
+  border-bottom: 1px solid #484747;
+  width: 20vw; 
+  
+
+
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #b62222;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+</style>
