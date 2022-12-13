@@ -3,16 +3,17 @@
 
 {% block content %}
     <main class='bg-primary_black min-h-screen w-full'>
-        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-end items-end bg-cover" style="background-image: url(/media/covers/inception.jpg);" >
+        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-end items-end bg-cover" style="background-image: url('{{ movie.image.url }}');" >
             <div>
                 <h2 class="text-6xl font-semibold text-white my-4">
-                    Inception
+                    {{movies.0.title}}
                 </h2>
                 <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
-                    Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced the film with Emma Thomas, his wife. The film stars Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets. He is offered a chance to have his criminal history erased as payment for the implantation of another person's idea into a target's subconscious. The ensemble cast includes Ken Watanabe, Joseph Gordon-Levitt, Marion Cotillard, Elliot Page, Tom Hardy, Dileep Rao, Cillian Murphy, Tom Berenger, and Michael Caine.                </p>
+                    {{movies.0.description}}
+                </p>
                 <div class="flex my-4">
 
-                    <a href="{% url 'netflixapp:play-movie' movie_id='ac0476c8-7812-49e4-9d28-1df0676e0ea7' %}" class="flex items-center bg-red py-2 px-5 rounded-md">
+                    <a href="{% url 'netflixapp:play-movie' movie_id=movies.0.uuid %}" class="flex items-center bg-red py-2 px-5 rounded-md">
                         <ion-icon name="play" class="text-2xl"></ion-icon>
                         <span class="ml-3 font-medium">
                             Play
