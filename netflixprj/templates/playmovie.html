@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-    <main class='bg-primary_black h-full w-full '>
+    <main class='bg-primary_black h-full w-full ' style>
         {{movie|json_script:'movie_data'}}
-        <video  controls class="w-full h-screen player"></video>
+        <video  controls class="w-full h-screen player" style="z-index: 214748364;"></video>
         
     </main>
     <script>
