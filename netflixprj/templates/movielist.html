@@ -3,17 +3,17 @@
 
 {% block content %}
     <main class='bg-primary_black min-h-screen w-full'>
-        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-end items-end bg-cover" style="background-image: url(/media/covers/drishyam.jpg);" >
+        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-end items-end bg-cover" style="background-image: url(/media/covers/inception.jpg);" >
             <div>
                 <h2 class="text-6xl font-semibold text-white my-4">
-                    Drishyam
+                    Inception
                 </h2>
                 <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus odit perspiciatis nostrum culpa exercitationem quis. Ab obcaecati odio minus. Dolorum sapiente eaque, repellendus ea fugiat amet fuga libero at!
                 </p>
                 <div class="flex my-4">
 
-                    <a href="{% url 'netflixapp:play-movie' movie_id='bdbf4db9-c514-4a98-825f-2e14bef5a0ea' %}" class="flex items-center bg-red py-2 px-5 rounded-md">
+                    <a href="{% url 'netflixapp:play-movie' movie_id='ac0476c8-7812-49e4-9d28-1df0676e0ea7' %}" class="flex items-center bg-red py-2 px-5 rounded-md">
                         <ion-icon name="play" class="text-2xl"></ion-icon>
                         <span class="ml-3 font-medium">
                             Play
@@ -23,11 +23,11 @@
 
                 </div>
             </div>
-        </section> 
+        </section>
         <!-- <section class='bg-primary_black  min-h-screen flex justify-center py-10'> -->
             <div class="p-8 w-10/12 relative" >
                 <h2 class="text-gray-200 text-2xl font-medium">
-                    Blockbuster movies
+                    Blockbuster Movies
                 </h2>
                 <div class="flex justify-center  items-center min-w-full  movie_lis">
 
@@ -59,12 +59,13 @@
                         </div>    
                     </a>
                     {% endfor %}
+
                 </div>
             </div>
         <!-- </section> -->
             <div class="p-8 w-10/12 relative" >
                 <h2 class="text-gray-200 text-2xl font-medium">
-                    Comedy Movies
+                    Hollywood Movies
                 </h2>
                 <div class="flex justify-center  items-center min-w-full  movie_lis">
 
@@ -80,4 +81,4 @@
                 </div>
             </div>
     </main>
-    {% endblock content %}
+{% endblock content %}
