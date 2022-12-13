@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from . forms import ProfileForm
 from . models import Profile, Movie, MovieBollywood, MovieComedy
+import json
+from django.http import JsonResponse
+from django.core import serializers
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
 
 class Home(View):
     def get(self, request, *args, **kwargs):
@@ -141,4 +146,37 @@ class PlayMovie(View):
             return render(request, 'playmovie.html', context)
         except MovieComedy().DoesNotExist:
             return redirect('netflixapp:profile-list')
+
+method_decorator(login_required, name='dispatch')
+class SearchMovie(View):
+    def get(self, request, *args, **kwargs):
+
+        movies=[]
+        for movie in Movie.objects.all():
+            d = {
+                'title':movie.title,
+                'uuid':movie.uuid,
+                'type':'Blockbuster'
+            }
+            movies.append(d)
+            
+
+        for movie in MovieBollywood.objects.all():
+            d = {
+                'title':movie.title,
+                'uuid':movie.uuid,
+                'type':'Bollywood'
+            }
+            movies.append(d)
+
+        for movie in MovieComedy.objects.all():
+            d = {
+                'title':movie.title,
+                'uuid':movie.uuid,
+                'type':'Comedy'
+            }
+            movies.append(d)
+
+        print(movies)
+        return JsonResponse(movies,safe=False)
             
