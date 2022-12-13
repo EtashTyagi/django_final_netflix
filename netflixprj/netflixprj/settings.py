@@ -141,6 +141,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 AUTH_USER_MODEL = 'netflixapp.CustomUser'
+LOGIN_URL = 'accounts/login'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
