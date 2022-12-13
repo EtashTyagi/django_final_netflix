@@ -50,6 +50,7 @@ Remove the margin in all browsers.
 
 body {
   margin: 0;
+  overflow-x:hidden ;
 }
 
 /**
@@ -704,7 +705,7 @@ video {
 }
 
 .h-40{
-  height: 10rem;
+  height: 15rem;
 }
 
 .h-full{
@@ -757,6 +758,8 @@ video {
 
 .m-4{
   margin: 1rem;
+  margin-left: 2.5rem;
+
 }
 
 .my-3{
@@ -798,7 +801,7 @@ video {
 }
 
 .min-w-full{
-  min-width: 100%;
+  min-width: 97vw;
 }
 
 .outline-none{
@@ -819,7 +822,9 @@ video {
 }
 
 .p-8{
-  padding: 2rem;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .py-1{
@@ -1197,3 +1202,26 @@ video {
 
 @media (min-width: 1536px){
 }
+
+::-webkit-scrollbar{
+	height: 4px;
+	width: 8px;
+	background: rgb(0, 0, 0);
+}
+::-webkit-scrollbar-thumb:horizontal{
+	background: #E50914;
+	border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:vertical{
+	background: #a70810;
+	border-radius: 10px;
+}
+
+.movie_lis img{
+  transition: .5s;
+}
+.movie_lis img:hover{
+  transform: scale(1.3);
+  box-shadow: 6px 6px 3px #840404;
+}
+
