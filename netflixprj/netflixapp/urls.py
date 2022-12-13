@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Home, ProfileList, ProfileCreate, MovieList, MovieDetail, PlayMovie
+from .views import Home, ProfileList, ProfileCreate, MovieList, MovieDetail, PlayMovie, SearchMovie
 
 app_name = 'netflixapp'
 
@@ -10,5 +10,6 @@ urlpatterns = [
     path('profiles/create/', ProfileCreate.as_view(), name="profile-create"),
     path('watch/<str:profile_id>/', MovieList.as_view(), name="movie-list"),
     path('watch/detail/<str:movie_id>/<str:movie_type>', MovieDetail.as_view(), name="movie-detail"),
-    path('watch/play/<str:movie_id>/', PlayMovie.as_view(), name="play-movie") 
+    path('watch/play/<str:movie_id>/', PlayMovie.as_view(), name="play-movie") ,
+    path('api/getmovies/',SearchMovie.as_view(),name="search-movie")
 ]
