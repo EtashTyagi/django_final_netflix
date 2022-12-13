@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views import View
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from . forms import ProfileForm
 from . models import Profile, Movie, MovieBollywood, MovieComedy
@@ -16,8 +16,7 @@ class Home(View):
             return redirect('netflixapp:profile-list')
         return render(request, 'index.html')
 
-method_decorator(login_required, name='dispatch')
-class ProfileList(View):
+class ProfileList(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         
         profiles = request.user.profiles.all()
@@ -27,8 +26,7 @@ class ProfileList(View):
         }
         return render(request, 'profilelist.html', context)
 
-method_decorator(login_required, name='dispatch')
-class ProfileCreate(View):
+class ProfileCreate(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = ProfileForm()
         context = {
@@ -48,8 +46,7 @@ class ProfileCreate(View):
         }
         return render(request, 'profilecreate.html', context)
 
-method_decorator(login_required, name='dispatch')
-class MovieList(View):
+class MovieList(LoginRequiredMixin, View):
     def get(self, request, profile_id, *args, **kwargs):
         try:
             profile = Profile.objects.get(uuid=profile_id)
@@ -69,8 +66,7 @@ class MovieList(View):
         except Profile.DoesNotExist:
             return redirect('netflixapp:profile-list')
 
-method_decorator(login_required, name='dispatch')
-class MovieListBollywood(View):
+class MovieListBollywood(LoginRequiredMixin, View):
     def get(self, request, profile_id, *args, **kwargs):
         try:
             profile = Profile.objects.get(uuid=profile_id)
@@ -87,8 +83,7 @@ class MovieListBollywood(View):
         except Profile.DoesNotExist:
             return redirect('netflixapp:profile-list')
 
-method_decorator(login_required, name='dispatch')
-class MovieDetail(View):
+class MovieDetail(LoginRequiredMixin, View):
     def get(self, request, movie_id, movie_type, *args, **kwargs):
         try:
             # print(movie_type)
@@ -106,8 +101,7 @@ class MovieDetail(View):
         except Movie.DoesNotExist:
             return redirect('netflixapp:profile-list')
 
-method_decorator(login_required, name='dispatch')
-class PlayMovie(View):
+class PlayMovie(LoginRequiredMixin, View):
     def get(self, request, movie_id, *args, **kwargs):
         try:
             movie = Movie.objects.get(uuid=movie_id)
@@ -147,8 +141,7 @@ class PlayMovie(View):
         except MovieComedy().DoesNotExist:
             return redirect('netflixapp:profile-list')
 
-method_decorator(login_required, name='dispatch')
-class SearchMovie(View):
+class SearchMovie(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
 
         movies=[]
